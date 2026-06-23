@@ -17,8 +17,12 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
-const ADMIN_EMAIL = "vivekyadav17@gmail.com";
 const ADMIN_PASSWORD = "power@123";
+const ADMIN_EMAILS = [
+  "vivekyadav17@gmail.com",
+  "vidhyaceo05@gmail.com",
+  "jaycto18@gmail.com",
+];
 
 export default function Login() {
   const { user, login } = useAuth();
@@ -40,12 +44,14 @@ export default function Login() {
   const onSubmit = (values: FormValues) => {
     setError("");
 
-    if (values.email === ADMIN_EMAIL && values.password === ADMIN_PASSWORD) {
+    const adminEmail = ADMIN_EMAILS.find((email) => email === values.email);
+
+    if (adminEmail && values.password === ADMIN_PASSWORD) {
       login({
         id: "admin",
         employeeId: "ADMIN",
         name: "Administrator",
-        email: ADMIN_EMAIL,
+        email: adminEmail,
         role: "admin",
       });
       setLocation("/admin/dashboard");
@@ -184,12 +190,6 @@ export default function Login() {
               </Button>
             </form>
           </Form>
-
-          <div className="mt-8 p-4 bg-muted rounded-lg">
-            <p className="text-xs font-medium text-muted-foreground mb-2">Demo credentials</p>
-            <p className="text-xs text-muted-foreground">Admin: vivekyadav17@gmail.com / power@123</p>
-            <p className="text-xs text-muted-foreground">Employees are created by the admin</p>
-          </div>
         </div>
       </div>
     </div>
